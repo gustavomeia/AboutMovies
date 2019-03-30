@@ -15,17 +15,32 @@ namespace AboutMovies.ViewModels {
             IUpcomingMovieService upcomingMovieService) : base(navigationService) {
             this._upcomingMovieService = upcomingMovieService;
             ItemAppearingCommand = new DelegateCommand<object>(async (object item) => await ItemAppearing(item));
+            ItemTappedCommand = new DelegateCommand<object>(async (object item) => await ItemTapped(item));
+
+            Title = "Upcoming Movies";
         }
 
         public ObservableCollection<Movie> Movies { get; set; } = new ObservableCollection<Movie>();
 
         private UpcomingMovie _lastResult;
-        
+
         public DelegateCommand<object> ItemAppearingCommand { get; private set; }
 
         async Task ItemAppearing(object item) {
             if (item is Movie movie && movie.Name == Movies.Last().Name) {
                 await LoadMovies();
+            }
+        }
+
+        public DelegateCommand<object> ItemTappedCommand { get; private set; }
+
+        async Task ItemTapped(object item) {
+            if (item is Movie movie) {
+                var navigationParams = new NavigationParameters {
+                    { "movie", movie }
+                };
+
+                await NavigationService.NavigateAsync("MovieDetailsPage", navigationParams);
             }
         }
 

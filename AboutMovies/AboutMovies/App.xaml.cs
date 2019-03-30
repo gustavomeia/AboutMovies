@@ -28,6 +28,7 @@ namespace AboutMovies {
 
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<MoviesListPage, MoviesListPageViewModel>();
+            containerRegistry.RegisterForNavigation<MovieDetailsPage, MovieDetailsPageViewModel>();
         }
     }
 }

@@ -4,13 +4,18 @@
              xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
              prism:ViewModelLocator.AutowireViewModel="True"
              xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
-            x:Class="AboutMovies.Views.MoviesListPage">
+             x:Class="AboutMovies.Views.MoviesListPage"
+             Title="{Binding Title}">
     <StackLayout>
         <ListView ItemsSource="{Binding Movies}" IsRefreshing="{Binding IsBusy}">
             <ListView.Behaviors>
+                <b:EventToCommandBehavior EventName="ItemTapped" 
+                                          Command="{Binding ItemTappedCommand}"
+                                          EventArgsParameterPath="Item" />
+
                 <b:EventToCommandBehavior EventName="ItemAppearing" 
-                                      Command="{Binding ItemAppearingCommand}"
-                                      EventArgsParameterPath="Item" />
+                                          Command="{Binding ItemAppearingCommand}"
+                                          EventArgsParameterPath="Item" />
             </ListView.Behaviors>
             
             <ListView.ItemTemplate>
