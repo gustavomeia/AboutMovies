@@ -17,11 +17,12 @@ namespace AboutMovies.Helpers {
 
         private static Movie Movie(UpcomingMovieResponse upcomingMovieResponse, GenreRootResponse genreRootResponse) {
             return new Movie {
-                Genre = FormatGenres(genreRootResponse, upcomingMovieResponse),
-                Name = upcomingMovieResponse.Title,
-                PosterUrl = baseImageUrl + upcomingMovieResponse.PosterPath,
-                ReleaseDate = upcomingMovieResponse.ReleaseDate,
                 BackdropUrl = baseImageUrl + upcomingMovieResponse.BackdropPath,
+                Name = upcomingMovieResponse.Title,
+                Genre = FormatGenres(genreRootResponse, upcomingMovieResponse),
+                Overview= upcomingMovieResponse.Overview,
+                ReleaseDate = upcomingMovieResponse.ReleaseDate,
+                PosterUrl = baseImageUrl + upcomingMovieResponse.PosterPath,
             };
         }
 
