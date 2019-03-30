@@ -3,9 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
              prism:ViewModelLocator.AutowireViewModel="True"
-             x:Class="AboutMovies.Views.MoviesListPage">
+             xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+            x:Class="AboutMovies.Views.MoviesListPage">
     <StackLayout>
-        <ListView ItemsSource="{Binding Movies}" >
+        <ListView ItemsSource="{Binding Movies}" IsRefreshing="{Binding IsBusy}">
+            <ListView.Behaviors>
+                <b:EventToCommandBehavior EventName="ItemAppearing" 
+                                      Command="{Binding ItemAppearingCommand}"
+                                      EventArgsParameterPath="Item" />
+            </ListView.Behaviors>
+            
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ImageCell Text="{Binding Name}" 
