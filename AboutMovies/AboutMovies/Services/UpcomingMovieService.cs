@@ -6,17 +6,16 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace AboutMovies.Services {
-    public class MovieService : IUpcomingMovieService {
+    public class UpcomingMovieService : IUpcomingMovieService {
         private readonly string apiKey = "1f54bd990f1cdfb230adb312546d765d";
         private readonly string apiUrl = "https://api.themoviedb.org/3";
-        private int page = 1;
-
         private GenreRootResponse genreRootResponse;
 
-        public async Task<UpcomingMovie> GetUpcomingMoviesAsync() {
+        public async Task<UpcomingMovie> GetUpcomingMoviesAsync(int page) {
             string upcomingMoviesPath = "movie/upcoming";
 
             using (var client = new HttpClient()) {
