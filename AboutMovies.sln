@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28721.148
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AboutMovies", "AboutMovies\AboutMovies\AboutMovies.csproj", "{322F0F85-199E-4805-9CE5-90810684D056}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AboutMovies.Android", "AboutMovies\AboutMovies.Android\AboutMovies.Android.csproj", "{521BDB80-E499-4394-8E6F-685AF12E8909}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{322F0F85-199E-4805-9CE5-90810684D056}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{322F0F85-199E-4805-9CE5-90810684D056}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{322F0F85-199E-4805-9CE5-90810684D056}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{322F0F85-199E-4805-9CE5-90810684D056}.Release|Any CPU.Build.0 = Release|Any CPU
+		{521BDB80-E499-4394-8E6F-685AF12E8909}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{521BDB80-E499-4394-8E6F-685AF12E8909}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{521BDB80-E499-4394-8E6F-685AF12E8909}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{521BDB80-E499-4394-8E6F-685AF12E8909}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{521BDB80-E499-4394-8E6F-685AF12E8909}.Release|Any CPU.Build.0 = Release|Any CPU
+		{521BDB80-E499-4394-8E6F-685AF12E8909}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {00807D84-B622-4D67-AFA0-D7F94AB5CDEC}
+	EndGlobalSection
+EndGlobal
