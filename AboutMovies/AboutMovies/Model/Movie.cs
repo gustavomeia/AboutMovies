@@ -4,6 +4,8 @@ namespace AboutMovies.Model
 {
     public class Movie
     {
+        public string BackdropUrl { get; set; }
+
         public string Name { get; set; }
 
         public string Genre { get; set; }

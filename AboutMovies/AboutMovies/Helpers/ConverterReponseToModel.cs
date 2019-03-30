@@ -20,7 +20,8 @@ namespace AboutMovies.Helpers {
                 Genre = FormatGenres(genreRootResponse, upcomingMovieResponse),
                 Name = upcomingMovieResponse.Title,
                 PosterUrl = baseImageUrl + upcomingMovieResponse.PosterPath,
-                ReleaseDate = upcomingMovieResponse.ReleaseDate
+                ReleaseDate = upcomingMovieResponse.ReleaseDate,
+                BackdropUrl = baseImageUrl + upcomingMovieResponse.BackdropPath,
             };
         }
 
