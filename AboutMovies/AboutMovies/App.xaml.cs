@@ -27,7 +27,6 @@ namespace AboutMovies {
             containerRegistry.Register<Interfaces.IUpcomingMovieService, Services.UpcomingMovieService>();
 
             containerRegistry.RegisterForNavigation<NavigationPage>();
-            containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
             containerRegistry.RegisterForNavigation<MoviesListPage, MoviesListPageViewModel>();
         }
     }
