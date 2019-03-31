@@ -37,7 +37,7 @@ namespace AboutMovies.Services {
                         if (!genreRootResponse.Succeeded) {
                             return new UpcomingMovie {
                                 Succeeded = false,
-                                ErrorMessage = genreRootResponse.ErrorMessage,
+                                ErrorMessage = string.IsNullOrEmpty(genreRootResponse.ErrorMessage) ? "" : genreRootResponse.ErrorMessage,
                             };
                         }
                     }
@@ -65,7 +65,9 @@ namespace AboutMovies.Services {
 
                     if (result.IsSuccessStatusCode) {
                         var resultString = await result.Content.ReadAsStringAsync();
-                        return JsonConvert.DeserializeObject<GenreRootResponse>(resultString);
+                        var genreRootResponse = JsonConvert.DeserializeObject<GenreRootResponse>(resultString);
+                        genreRootResponse.Succeeded = true;
+                        return genreRootResponse;
                     }
                     else {
                         return new GenreRootResponse {
