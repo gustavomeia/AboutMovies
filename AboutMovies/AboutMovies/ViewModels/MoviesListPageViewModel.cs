@@ -2,7 +2,6 @@
 using AboutMovies.Model;
 using Prism.Commands;
 using Prism.Navigation;
-using Prism.Services;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -17,7 +16,6 @@ namespace AboutMovies.ViewModels {
         public MoviesListPageViewModel(INavigationService navigationService, IUpcomingMovieService upcomingMovieService) : base(navigationService) {
             this._upcomingMovieService = upcomingMovieService;
 
-            ListViewItemAppearingCommand = new DelegateCommand<object>(async (object item) => await ListViewItemAppearing(item));
             ListViewItemTappedCommand = new DelegateCommand<object>(async (object item) => await ListViewItemTapped(item));
             ToolBarSearchItemTappedCommand = new DelegateCommand(async () => await ToolBarSearchItemTapped());
             SearchTextChangedCommand = new DelegateCommand(async () => await SearchTextChanged());
@@ -63,8 +61,6 @@ namespace AboutMovies.ViewModels {
 
         public DelegateCommand<object> ListViewItemTappedCommand { get; private set; }
 
-        public DelegateCommand<object> ListViewItemAppearingCommand { get; private set; }
-
         public DelegateCommand SearchTextChangedCommand { get; private set; }
 
         public DelegateCommand ToolBarSearchItemTappedCommand { get; private set; }
@@ -92,12 +88,6 @@ namespace AboutMovies.ViewModels {
             }
             else {
                 Movies = await Task.Run(() => new ObservableCollection<Movie>(_allMovies.Where(x => x.Name.ToLower().Contains(text.ToLower()))));
-            }
-        }
-
-        async Task ListViewItemAppearing(object item) {
-            if (item is Movie movie && movie.Name == Movies.Last().Name) {
-                await LoadMovies();
             }
         }
 

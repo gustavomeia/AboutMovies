@@ -73,10 +73,6 @@
             <b:EventToCommandBehavior EventName="ItemTapped"
                                               Command="{Binding ListViewItemTappedCommand}"
                                               EventArgsParameterPath="Item" />
-
-            <b:EventToCommandBehavior EventName="ItemAppearing"
-                                              Command="{Binding ListViewItemAppearingCommand}"
-                                              EventArgsParameterPath="Item" />
         </ListView.Behaviors>
 
         <ListView.ItemTemplate>
