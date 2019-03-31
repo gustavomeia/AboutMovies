@@ -64,16 +64,17 @@
         </Grid>
     </NavigationPage.TitleView>
 
-    <ListView ItemsSource="{Binding Movies}" 
-              CachingStrategy="RecycleElement" 
-              RowHeight="160" 
+    <ListView ItemsSource="{Binding Movies}"
+              CachingStrategy="RecycleElement"
+              SeparatorVisibility="None"
+              RowHeight="160"
               SelectionMode="None">
         <ListView.Behaviors>
-            <b:EventToCommandBehavior EventName="ItemTapped" 
+            <b:EventToCommandBehavior EventName="ItemTapped"
                                               Command="{Binding ListViewItemTappedCommand}"
                                               EventArgsParameterPath="Item" />
 
-            <b:EventToCommandBehavior EventName="ItemAppearing" 
+            <b:EventToCommandBehavior EventName="ItemAppearing"
                                               Command="{Binding ListViewItemAppearingCommand}"
                                               EventArgsParameterPath="Item" />
         </ListView.Behaviors>
