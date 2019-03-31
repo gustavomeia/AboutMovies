@@ -15,20 +15,20 @@
             </Grid.ColumnDefinitions>
 
             <Label Grid.Column="0"
+                   Text="{Binding Title}" 
+                   IsVisible="{Binding SearchBarNotVisible}"
                    HorizontalOptions="Start"
                    VerticalOptions="Center"
                    FontSize="Large"
                    FontAttributes="Bold"
-                   TextColor="White"
-                   Text="{Binding Title}" 
-                   IsVisible="{Binding SearchBarNotVisible}"/>
+                   TextColor="White" />
 
             <Entry Grid.Column="1" 
-                   Margin="0"
-                   PropertyChanged="Entry_PropertyChanged"
+                   IsVisible="{Binding SearchBarVisible}"
                    Text="{Binding SearchText}"
                    Placeholder="Search for a movie" 
-                   IsVisible="{Binding SearchBarVisible}">
+                   Margin="0"
+                   PropertyChanged="Entry_PropertyChanged">
                 <Entry.Behaviors>
                     <b:EventToCommandBehavior EventName="TextChanged" 
                                               Command="{Binding SearchTextChangedCommand}" />
@@ -36,29 +36,27 @@
             </Entry>
 
             <Grid Grid.Column="2" IsVisible="{Binding IsNotBusy}" Margin="10,0">
-                <Grid >
-                    <Image IsVisible="{Binding SearchBarVisible}"
-                           Source="close.png"
-                           WidthRequest="32"
-                           HeightRequest="32"/>
+                <Image IsVisible="{Binding SearchBarVisible}"
+                       Source="close.png"
+                       WidthRequest="32"
+                       HeightRequest="32"/>
 
-                    <Image IsVisible="{Binding SearchBarNotVisible}"
-                           Source="search.png"
-                           WidthRequest="32"
-                           HeightRequest="32"/>
+                <Image IsVisible="{Binding SearchBarNotVisible}"
+                       Source="search.png"
+                       WidthRequest="32"
+                       HeightRequest="32"/>
 
-                    <Button BackgroundColor="Transparent"
+                <Button BackgroundColor="Transparent"
                         WidthRequest="32"
                         HeightRequest="32"
                         Command="{Binding ToolBarSearchItemTappedCommand}" />
-                </Grid>
             </Grid>
 
             <ActivityIndicator Grid.Column="2" 
-                               IsRunning="True"
+                               IsVisible="{Binding IsBusy}"
+                               IsRunning="{Binding IsBusy}"
                                WidthRequest="32"
                                HeightRequest="32"
-                               IsVisible="{Binding IsBusy}"
                                HorizontalOptions="Center"
                                VerticalOptions="Center"/>
         </Grid>

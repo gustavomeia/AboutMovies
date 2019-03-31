@@ -10,8 +10,7 @@ using System.Threading.Tasks;
 namespace AboutMovies.ViewModels {
     public class MoviesListPageViewModel : ViewModelBase {
         private readonly IUpcomingMovieService _upcomingMovieService;
-        private List<Movie> _allMovies = new List<Movie>();
-        private UpcomingMovie _lastResult;
+        private readonly List<Movie> _allMovies = new List<Movie>();
 
         public MoviesListPageViewModel(INavigationService navigationService, IUpcomingMovieService upcomingMovieService) : base(navigationService) {
             this._upcomingMovieService = upcomingMovieService;
@@ -101,31 +100,25 @@ namespace AboutMovies.ViewModels {
             }
         }
 
-        private async Task LoadMovies() {
-            if (!CanLoadMore)
-                return;
-
-            IsBusy = true;
-
-            int pageToLoad = (_lastResult == null) ? 1 : _lastResult.Page + 1;
-            _lastResult = await _upcomingMovieService.GetUpcomingMoviesAsync(pageToLoad);
-            CanLoadMore = _lastResult.Page != _lastResult.TotalPages;
-
-            foreach (var movie in _lastResult.Movies) {
-                Movies.Add(movie);
-                _allMovies.Add(movie);
-            }
-
-            IsBusy = false;
-        }
-
         private async Task LoadAllMovies() {
             if (!CanLoadMore)
                 return;
 
+            IsBusy = true;
+            var upcomingMovieResult = new UpcomingMovie();
+
             while (CanLoadMore) {
-                await LoadMovies();
+                int pageToLoad = upcomingMovieResult.Page + 1;
+                upcomingMovieResult = await _upcomingMovieService.GetUpcomingMoviesAsync(pageToLoad);
+                CanLoadMore = upcomingMovieResult.Page != upcomingMovieResult.TotalPages;
+
+                foreach (var movie in upcomingMovieResult.Movies) {
+                    Movies.Add(movie);
+                    _allMovies.Add(movie);
+                }
             }
+
+            IsBusy = false;
         }
 
         #endregion
