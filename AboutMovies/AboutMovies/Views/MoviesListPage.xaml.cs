@@ -8,5 +8,13 @@ namespace AboutMovies.Views
         {
             InitializeComponent();
         }
+
+        private void Entry_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
+            if (e.PropertyName == "IsVisible") {
+                if (sender is Entry entry && entry.IsVisible) {
+                    entry.Focus();
+                }
+            }
+        }
     }
 }

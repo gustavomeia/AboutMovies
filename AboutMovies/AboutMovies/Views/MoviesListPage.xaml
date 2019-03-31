@@ -4,27 +4,82 @@
              xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
              prism:ViewModelLocator.AutowireViewModel="True"
              xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
-             x:Class="AboutMovies.Views.MoviesListPage"
-             Title="{Binding Title}">
-    <StackLayout>
-        <ListView ItemsSource="{Binding Movies}" IsRefreshing="{Binding IsBusy}">
-            <ListView.Behaviors>
-                <b:EventToCommandBehavior EventName="ItemTapped" 
-                                          Command="{Binding ItemTappedCommand}"
-                                          EventArgsParameterPath="Item" />
+             x:Class="AboutMovies.Views.MoviesListPage">
+    <NavigationPage.TitleView>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
 
-                <b:EventToCommandBehavior EventName="ItemAppearing" 
-                                          Command="{Binding ItemAppearingCommand}"
-                                          EventArgsParameterPath="Item" />
-            </ListView.Behaviors>
-            
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ImageCell Text="{Binding Name}" 
-                               Detail="{Binding Genre}"  
-                               ImageSource="{Binding PosterUrl}"/>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-    </StackLayout>
+            <Label Grid.Column="0"
+                   HorizontalOptions="Start"
+                   VerticalOptions="Center"
+                   FontSize="Large"
+                   FontAttributes="Bold"
+                   TextColor="White"
+                   Text="{Binding Title}" 
+                   IsVisible="{Binding SearchBarNotVisible}"/>
+
+            <Entry Grid.Column="1" 
+                   Margin="0"
+                   PropertyChanged="Entry_PropertyChanged"
+                   Text="{Binding SearchText}"
+                   Placeholder="Search for a movie" 
+                   IsVisible="{Binding SearchBarVisible}">
+                <Entry.Behaviors>
+                    <b:EventToCommandBehavior EventName="TextChanged" 
+                                              Command="{Binding SearchTextChangedCommand}" />
+                </Entry.Behaviors>
+            </Entry>
+
+            <Grid Grid.Column="2" IsVisible="{Binding IsNotBusy}" Margin="10,0">
+                <Grid >
+                    <Image IsVisible="{Binding SearchBarVisible}"
+                           Source="close.png"
+                           WidthRequest="32"
+                           HeightRequest="32"/>
+
+                    <Image IsVisible="{Binding SearchBarNotVisible}"
+                           Source="search.png"
+                           WidthRequest="32"
+                           HeightRequest="32"/>
+
+                    <Button BackgroundColor="Transparent"
+                        WidthRequest="32"
+                        HeightRequest="32"
+                        Command="{Binding ToolBarSearchItemTappedCommand}" />
+                </Grid>
+            </Grid>
+
+            <ActivityIndicator Grid.Column="2" 
+                               IsRunning="True"
+                               WidthRequest="32"
+                               HeightRequest="32"
+                               IsVisible="{Binding IsBusy}"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"/>
+        </Grid>
+    </NavigationPage.TitleView>
+
+    <ListView ItemsSource="{Binding Movies}">
+        <ListView.Behaviors>
+            <b:EventToCommandBehavior EventName="ItemTapped" 
+                                              Command="{Binding ListViewItemTappedCommand}"
+                                              EventArgsParameterPath="Item" />
+
+            <b:EventToCommandBehavior EventName="ItemAppearing" 
+                                              Command="{Binding ListViewItemAppearingCommand}"
+                                              EventArgsParameterPath="Item" />
+        </ListView.Behaviors>
+
+        <ListView.ItemTemplate>
+            <DataTemplate>
+                <ImageCell Text="{Binding Name}" 
+                                   Detail="{Binding Genre}"  
+                                   ImageSource="{Binding PosterUrl}"/>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+    </ListView>
 </ContentPage>
