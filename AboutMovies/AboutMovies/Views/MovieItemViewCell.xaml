@@ -15,11 +15,12 @@
             <Image Grid.Column="0" 
                    Margin="2,2,0,2"
                    Source="{Binding PosterUrl}" 
-                   Aspect="AspectFill"/>
+                   Aspect="AspectFill" />
 
             <Grid Grid.Column="1" 
                   ColumnSpacing="0" RowSpacing="0"
                   Margin="0,2,2,2"
+                  Padding="5"
                   BackgroundColor="White">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
@@ -32,7 +33,6 @@
                 
                 <Label Grid.Row="0" 
                        Grid.ColumnSpan="2"
-                       Margin="5"
                        Text="{Binding Name}"
                        HorizontalOptions="Center"
                        MaxLines="2"
@@ -43,7 +43,6 @@
 
                 <StackLayout Grid.Row="1" 
                              Grid.Column="0"
-                             Margin="5"
                              VerticalOptions="EndAndExpand">
                     <Label Text="Genres"
                            FontAttributes="Bold"
@@ -56,7 +55,6 @@
 
                 <StackLayout Grid.Row="1" 
                              Grid.Column="1"
-                             Margin="5"
                              VerticalOptions="EndAndExpand">
                     <Label Text="Release Date"
                            FontAttributes="Bold"
