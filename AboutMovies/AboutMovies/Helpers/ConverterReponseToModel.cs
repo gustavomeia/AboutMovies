@@ -12,6 +12,8 @@ namespace AboutMovies.Helpers {
                 Page = upcomingMoviesRootResponse.Page,
                 TotalPages = upcomingMoviesRootResponse.TotalPages,
                 Movies = upcomingMoviesRootResponse.Results.Select(x => Movie(x, genreRootResponse)).ToList(),
+                Succeeded = true,
+                ErrorMessage = string.Empty,
             };
         }
 
@@ -20,7 +22,7 @@ namespace AboutMovies.Helpers {
                 BackdropUrl = baseImageUrl + upcomingMovieResponse.BackdropPath,
                 Name = upcomingMovieResponse.Title,
                 Genre = FormatGenres(genreRootResponse, upcomingMovieResponse),
-                Overview= upcomingMovieResponse.Overview,
+                Overview = upcomingMovieResponse.Overview,
                 ReleaseDate = upcomingMovieResponse.ReleaseDate,
                 PosterUrl = baseImageUrl + upcomingMovieResponse.PosterPath,
             };

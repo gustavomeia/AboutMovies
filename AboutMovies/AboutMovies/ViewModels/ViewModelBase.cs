@@ -39,20 +39,12 @@ namespace AboutMovies.ViewModels {
             NavigationService = navigationService;
         }
 
-        public virtual void OnNavigatedFrom(INavigationParameters parameters) {
+        public virtual void OnNavigatedFrom(INavigationParameters parameters) { }
 
-        }
+        public virtual void OnNavigatedTo(INavigationParameters parameters) { }
 
-        public virtual void OnNavigatedTo(INavigationParameters parameters) {
+        public virtual void OnNavigatingTo(INavigationParameters parameters) { }
 
-        }
-
-        public virtual void OnNavigatingTo(INavigationParameters parameters) {
-
-        }
-
-        public virtual void Destroy() {
-
-        }
+        public virtual void Destroy() { }
     }
 }

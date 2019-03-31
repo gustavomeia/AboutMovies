@@ -2,6 +2,7 @@
 using AboutMovies.Model;
 using Prism.Commands;
 using Prism.Navigation;
+using Prism.Services;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -9,11 +10,13 @@ using System.Threading.Tasks;
 
 namespace AboutMovies.ViewModels {
     public class MoviesListPageViewModel : ViewModelBase {
+        private readonly IPageDialogService _dialogService;
         private readonly IUpcomingMovieService _upcomingMovieService;
         private readonly List<Movie> _allMovies = new List<Movie>();
 
-        public MoviesListPageViewModel(INavigationService navigationService, IUpcomingMovieService upcomingMovieService) : base(navigationService) {
-            this._upcomingMovieService = upcomingMovieService;
+        public MoviesListPageViewModel(INavigationService navigationService, IPageDialogService dialogService, IUpcomingMovieService upcomingMovieService) : base(navigationService) {
+            _dialogService = dialogService;
+            _upcomingMovieService = upcomingMovieService;
 
             ListViewItemTappedCommand = new DelegateCommand<object>(async (object item) => await ListViewItemTapped(item));
             ToolBarSearchItemTappedCommand = new DelegateCommand(async () => await ToolBarSearchItemTapped());
@@ -110,11 +113,19 @@ namespace AboutMovies.ViewModels {
             while (CanLoadMore) {
                 int pageToLoad = upcomingMovieResult.Page + 1;
                 upcomingMovieResult = await _upcomingMovieService.GetUpcomingMoviesAsync(pageToLoad);
-                CanLoadMore = upcomingMovieResult.Page != upcomingMovieResult.TotalPages;
 
-                foreach (var movie in upcomingMovieResult.Movies) {
-                    Movies.Add(movie);
-                    _allMovies.Add(movie);
+                if (upcomingMovieResult.Succeeded) {
+                    CanLoadMore = upcomingMovieResult.Page != upcomingMovieResult.TotalPages;
+
+                    foreach (var movie in upcomingMovieResult.Movies) {
+                        Movies.Add(movie);
+                        _allMovies.Add(movie);
+                    }
+                }
+                else {
+                    CanLoadMore = false;
+                    await _dialogService.DisplayAlertAsync("Error", $"Oops... Some error occurred and we can't load the movies.\n\nReason: {upcomingMovieResult.ErrorMessage}", "Ok");
+                    break;
                 }
             }
 

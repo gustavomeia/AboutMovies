@@ -1,10 +1,5 @@
 ﻿using AboutMovies.Model;
-using Prism.Commands;
-using Prism.Mvvm;
 using Prism.Navigation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace AboutMovies.ViewModels {
     public class MovieDetailsPageViewModel : ViewModelBase {
@@ -14,6 +9,8 @@ namespace AboutMovies.ViewModels {
             set { SetProperty(ref _movie, value); }
         }
 
+        //We dont need to create the MovieDetailsService for now because all information 
+        //that should be displayed to the user we get using the UpcomingMovieService
         public MovieDetailsPageViewModel(INavigationService navigationService) : base(navigationService) {
         }
 

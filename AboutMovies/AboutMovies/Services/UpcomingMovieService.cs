@@ -3,59 +3,83 @@ using AboutMovies.Interfaces;
 using AboutMovies.Model;
 using AboutMovies.Services.Responses;
 using Newtonsoft.Json;
-using System.Collections.Generic;
+using System;
 using System.IO;
 using System.Net.Http;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace AboutMovies.Services {
     public class UpcomingMovieService : IUpcomingMovieService {
+        //The API page: https://developers.themoviedb.org/3/movies/get-upcoming 
         private readonly string apiKey = "1f54bd990f1cdfb230adb312546d765d";
         private readonly string apiUrl = "https://api.themoviedb.org/3";
         private GenreRootResponse genreRootResponse;
 
+        //TODO: Need receive the region as a parameter, so that the user can choose the region to filter the results
         public async Task<UpcomingMovie> GetUpcomingMoviesAsync(int page) {
-            string upcomingMoviesPath = "movie/upcoming";
+            try {
+                string upcomingMoviesPath = "movie/upcoming";
 
-            using (var client = new HttpClient()) {
-                var startPath = Path.Combine(apiUrl, upcomingMoviesPath);
-                var result = await client.GetAsync($"{startPath}?api_key={apiKey}&language=en-US&page={page}");
+                using (var client = new HttpClient()) {
+                    var startPath = Path.Combine(apiUrl, upcomingMoviesPath);
+                    var result = await client.GetAsync($"{startPath}?api_key={apiKey}&language=en-US&page={page}");
 
-                if (result.IsSuccessStatusCode) {
+                    if (!result.IsSuccessStatusCode) {
+                        return new UpcomingMovie {
+                            Succeeded = false,
+                            ErrorMessage = result.ReasonPhrase,
+                        };
+                    }
+
                     if (genreRootResponse == null) {
-                        await FillGenres();
+                        genreRootResponse = await FillGenres();
+
+                        if (!genreRootResponse.Succeeded) {
+                            return new UpcomingMovie {
+                                Succeeded = false,
+                                ErrorMessage = genreRootResponse.ErrorMessage,
+                            };
+                        }
                     }
 
                     var resultString = await result.Content.ReadAsStringAsync();
                     var upcomingMoviesRoot = JsonConvert.DeserializeObject<UpcomingMoviesRootResponse>(resultString);
                     return ConverterReponseToModel.UpcomingMovie(upcomingMoviesRoot, genreRootResponse);
                 }
-                else {
-                    //TODO: ERROR!!!
-                    return new UpcomingMovie();
-                }
+            }
+            catch (Exception ex) {
+                return new UpcomingMovie {
+                    Succeeded = false,
+                    ErrorMessage = ex.Message,
+                };
             }
         }
 
+        private async Task<GenreRootResponse> FillGenres() {
+            try {
+                var genrePath = "genre/movie/list";
 
-        private async Task FillGenres() {
-            var genrePath = "genre/movie/list";
+                using (var client = new HttpClient()) {
+                    var startPath = Path.Combine(apiUrl, genrePath);
+                    var result = await client.GetAsync($"{startPath}?api_key={apiKey}&language=en-US");
 
-            using (var client = new HttpClient()) {
-                var startPath = Path.Combine(apiUrl, genrePath);
-                var result = await client.GetAsync($"{startPath}?api_key={apiKey}&language=en-US");
-
-                if (result.IsSuccessStatusCode) {
-                    var resultString = await result.Content.ReadAsStringAsync();
-                    genreRootResponse = JsonConvert.DeserializeObject<GenreRootResponse>(resultString);
+                    if (result.IsSuccessStatusCode) {
+                        var resultString = await result.Content.ReadAsStringAsync();
+                        return JsonConvert.DeserializeObject<GenreRootResponse>(resultString);
+                    }
+                    else {
+                        return new GenreRootResponse {
+                            ErrorMessage = result.ReasonPhrase,
+                            Succeeded = false
+                        };
+                    }
                 }
-                else {
-                    //TODO: ERROR!!!
-                    genreRootResponse = new GenreRootResponse {
-                        Genres = new List<GenreResponse>()
-                    };
-                }
+            }
+            catch (Exception ex) {
+                return new GenreRootResponse {
+                    Succeeded = false,
+                    ErrorMessage = ex.Message,
+                };
             }
         }
     }
