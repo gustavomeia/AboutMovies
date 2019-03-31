@@ -4,6 +4,7 @@
              xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
              prism:ViewModelLocator.AutowireViewModel="True"
              xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+             xmlns:views="clr-namespace:AboutMovies.Views"
              x:Class="AboutMovies.Views.MoviesListPage">
     <NavigationPage.TitleView>
         <Grid>
@@ -63,7 +64,10 @@
         </Grid>
     </NavigationPage.TitleView>
 
-    <ListView ItemsSource="{Binding Movies}">
+    <ListView ItemsSource="{Binding Movies}" 
+              CachingStrategy="RecycleElement" 
+              RowHeight="160" 
+              SelectionMode="None">
         <ListView.Behaviors>
             <b:EventToCommandBehavior EventName="ItemTapped" 
                                               Command="{Binding ListViewItemTappedCommand}"
@@ -76,9 +80,7 @@
 
         <ListView.ItemTemplate>
             <DataTemplate>
-                <ImageCell Text="{Binding Name}" 
-                                   Detail="{Binding Genre}"  
-                                   ImageSource="{Binding PosterUrl}"/>
+                <views:MovieItemViewCell/>
             </DataTemplate>
         </ListView.ItemTemplate>
     </ListView>
