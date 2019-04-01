@@ -18,9 +18,9 @@ namespace AboutMovies.ViewModels {
             _dialogService = dialogService;
             _upcomingMovieService = upcomingMovieService;
 
-            ListViewItemTappedCommand = new DelegateCommand<object>(async (object item) => await ListViewItemTapped(item));
-            ToolBarSearchItemTappedCommand = new DelegateCommand(async () => await ToolBarSearchItemTapped());
-            SearchTextChangedCommand = new DelegateCommand(async () => await SearchTextChanged());
+            NavigateToMovieDetailsCommand = new DelegateCommand<object>(async (object item) => await NavigateToMovieDetails(item));
+            ChangeVisibilityOfSearchBarCommand = new DelegateCommand(async () => await ChangeVisibilityOfSearchBar());
+            SearchMoviesCommand = new DelegateCommand(async () => await SearchMovies());
 
             Title = "Upcoming Movies";
         }
@@ -61,50 +61,47 @@ namespace AboutMovies.ViewModels {
 
         #region Commands
 
-        public DelegateCommand<object> ListViewItemTappedCommand { get; private set; }
+        public DelegateCommand<object> NavigateToMovieDetailsCommand { get; private set; }
 
-        public DelegateCommand SearchTextChangedCommand { get; private set; }
+        public DelegateCommand SearchMoviesCommand { get; private set; }
 
-        public DelegateCommand ToolBarSearchItemTappedCommand { get; private set; }
+        public DelegateCommand ChangeVisibilityOfSearchBarCommand { get; private set; }
 
         #endregion
 
         #region Functions
 
-        private async Task ToolBarSearchItemTapped() {
+        private async Task ChangeVisibilityOfSearchBar() {
             SearchBarVisible = !SearchBarVisible;
 
             if (!SearchBarVisible && !string.IsNullOrEmpty(SearchText)) {
                 SearchText = string.Empty;
-                await SearchMovies(string.Empty);
+                await SearchMovies();
             }
         }
 
-        private async Task SearchTextChanged() {
-            await SearchMovies(SearchText);
-        }
-
-        private async Task SearchMovies(string text) {
-            if (text == string.Empty) {
+        private async Task SearchMovies() {
+            if (SearchText == string.Empty) {
                 Movies = await Task.Run(() => new ObservableCollection<Movie>(_allMovies));
             }
             else {
-                Movies = await Task.Run(() => new ObservableCollection<Movie>(_allMovies.Where(x => x.Name.ToLower().Contains(text.ToLower()))));
+                Movies = await Task.Run(() => new ObservableCollection<Movie>(_allMovies
+                    .Where(x => x.Name.ToLower().Contains(SearchText.ToLower()))));
             }
         }
 
-        async Task ListViewItemTapped(object item) {
+        async Task NavigateToMovieDetails(object item) {
             if (item is Movie movie) {
                 var navigationParams = new NavigationParameters {
                     { "movie", movie }
                 };
 
-                await NavigationService.NavigateAsync("MovieDetailsPage", navigationParams);
+                await NavigationService.NavigateAsync("MovieDetailsPage", navigationParams, true);
             }
         }
 
         private async Task LoadAllMovies() {
-            if (!CanLoadMore)
+            if (!CanLoadMore || IsBusy)
                 return;
 
             IsBusy = true;

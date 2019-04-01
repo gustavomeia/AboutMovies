@@ -26,12 +26,14 @@
             <Entry Grid.Column="1" 
                    IsVisible="{Binding SearchBarVisible}"
                    Text="{Binding SearchText}"
+                   PlaceholderColor="LightGray"
+                   TextColor="White"
                    Placeholder="Search for a movie" 
                    Margin="0"
                    PropertyChanged="Entry_PropertyChanged">
                 <Entry.Behaviors>
                     <b:EventToCommandBehavior EventName="TextChanged" 
-                                              Command="{Binding SearchTextChangedCommand}" />
+                                              Command="{Binding SearchMoviesCommand}" />
                 </Entry.Behaviors>
             </Entry>
 
@@ -39,17 +41,20 @@
                 <Image IsVisible="{Binding SearchBarVisible}"
                        Source="close.png"
                        WidthRequest="32"
-                       HeightRequest="32"/>
+                       HeightRequest="32">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ChangeVisibilityOfSearchBarCommand}"/>
+                    </Image.GestureRecognizers>
+                </Image>
 
                 <Image IsVisible="{Binding SearchBarNotVisible}"
                        Source="search.png"
                        WidthRequest="32"
-                       HeightRequest="32"/>
-
-                <Button BackgroundColor="Transparent"
-                        WidthRequest="32"
-                        HeightRequest="32"
-                        Command="{Binding ToolBarSearchItemTappedCommand}" />
+                       HeightRequest="32">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ChangeVisibilityOfSearchBarCommand}"/>
+                    </Image.GestureRecognizers>
+                </Image>
             </Grid>
 
             <ActivityIndicator Grid.Column="2" 
@@ -69,7 +74,7 @@
               SelectionMode="None">
         <ListView.Behaviors>
             <b:EventToCommandBehavior EventName="ItemTapped"
-                                              Command="{Binding ListViewItemTappedCommand}"
+                                              Command="{Binding NavigateToMovieDetailsCommand}"
                                               EventArgsParameterPath="Item" />
         </ListView.Behaviors>
 
