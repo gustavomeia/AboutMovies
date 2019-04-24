@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             xmlns:b="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+             xmlns:views="clr-namespace:AboutMovies.Views"
+             x:Class="AboutMovies.Views.MoviesListPage">
+    <NavigationPage.TitleView>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Column="0"
+                   Text="{Binding Title}" 
+                   IsVisible="{Binding SearchBarNotVisible}"
+                   HorizontalOptions="Start"
+                   VerticalOptions="Center"
+                   FontSize="Large"
+                   FontAttributes="Bold"
+                   TextColor="White" />
+
+            <Entry Grid.Column="1" 
+                   IsVisible="{Binding SearchBarVisible}"
+                   Text="{Binding SearchText}"
+                   PlaceholderColor="LightGray"
+                   TextColor="White"
+                   Placeholder="Search for a movie" 
+                   Margin="0"
+                   PropertyChanged="Entry_PropertyChanged">
+                <Entry.Behaviors>
+                    <b:EventToCommandBehavior EventName="TextChanged" 
+                                              Command="{Binding SearchMoviesCommand}" />
+                </Entry.Behaviors>
+            </Entry>
+
+            <Grid Grid.Column="2" IsVisible="{Binding IsNotBusy}" Margin="10,0">
+                <Image IsVisible="{Binding SearchBarVisible}"
+                       Source="close.png"
+                       WidthRequest="32"
+                       HeightRequest="32">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ChangeVisibilityOfSearchBarCommand}"/>
+                    </Image.GestureRecognizers>
+                </Image>
+
+                <Image IsVisible="{Binding SearchBarNotVisible}"
+                       Source="search.png"
+                       WidthRequest="32"
+                       HeightRequest="32">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ChangeVisibilityOfSearchBarCommand}"/>
+                    </Image.GestureRecognizers>
+                </Image>
+            </Grid>
+
+            <ActivityIndicator Grid.Column="2" 
+                               IsVisible="{Binding IsBusy}"
+                               IsRunning="{Binding IsBusy}"
+                               WidthRequest="32"
+                               HeightRequest="32"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"/>
+        </Grid>
+    </NavigationPage.TitleView>
+
+    <ListView ItemsSource="{Binding Movies}"
+              CachingStrategy="RecycleElement"
+              SeparatorVisibility="None"
+              RowHeight="160"
+              SelectionMode="None">
+        <ListView.Behaviors>
+            <b:EventToCommandBehavior EventName="ItemTapped"
+                                              Command="{Binding NavigateToMovieDetailsCommand}"
+                                              EventArgsParameterPath="Item" />
+        </ListView.Behaviors>
+
+        <ListView.ItemTemplate>
+            <DataTemplate>
+                <views:MovieItemViewCell/>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+    </ListView>
+</ContentPage>

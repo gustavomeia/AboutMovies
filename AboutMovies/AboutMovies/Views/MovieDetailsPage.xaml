@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             x:Class="AboutMovies.Views.MovieDetailsPage"
+             Title="{Binding Title}">
+    <ScrollView>
+        <Grid ColumnSpacing="0" RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Image Source="{Binding Movie.BackdropUrl}" 
+                   Grid.Row="0" 
+                   Aspect="AspectFill" />
+
+            <Image Source="{Binding Movie.PosterUrl}"
+                   Grid.Row="0" 
+                   HeightRequest="150" 
+                   WidthRequest="150"
+                   TranslationY="75" 
+                   HorizontalOptions="Center"
+                   VerticalOptions="End" />
+
+            <StackLayout Grid.Row="1" Padding="0,75,0,0" HorizontalOptions="Center">
+                <Label Text="{Binding Movie.Name}"
+                       FontSize="Large" 
+                       FontAttributes="Bold"
+                       HorizontalTextAlignment="Center" />
+
+                <Label Text="{Binding Movie.ReleaseDate, StringFormat=Release Date: \{0:d\}}" 
+                       HorizontalTextAlignment="Center" />
+            </StackLayout>
+
+            <StackLayout Grid.Row="2" Margin="0,10" BackgroundColor="WhiteSmoke" Padding="10,5">
+                <Label Text="Overview" FontAttributes="Bold" FontSize="Medium"/>
+                <Label Text="{Binding Movie.Overview}"/>
+            </StackLayout>
+
+            <StackLayout Grid.Row="3" Margin="10,0">
+                <Label Text="Genres" FontAttributes="Bold" FontSize="Medium" />
+                <Label Text="{Binding Movie.Genre}" />
+            </StackLayout>
+        </Grid>
+    </ScrollView>
+</ContentPage>
